@@ -24,17 +24,18 @@ import android.os.Bundle;
 
 /**
  * This class sets the FLAG_SECURE flag on the window to make the app
- *  private when shown in the task switcher
+ * private when shown in the task switcher, if the NoAppScreenshots preference
+ * is set in config.xml.
  */
 public class PrivacyScreenPlugin extends CordovaPlugin {
 
-  // This does not seem to work reliably,
-  // and we still want to be able to take screenshots on android.
-  //
-  // @Override
-  // public void initialize(CordovaInterface cordova, CordovaWebView webView) {
-  //   super.initialize(cordova, webView);
-  //   Activity activity = this.cordova.getActivity();
-  //   activity.getWindow().addFlags(WindowManager.LayoutParams.FLAG_SECURE);
-  // }
+  @Override
+  public void initialize(CordovaInterface cordova, CordovaWebView webView) {
+    super.initialize(cordova, webView);
+    Activity activity = this.cordova.getActivity();
+
+    if (preferences.getBoolean("NoAppScreenshots", true)) {
+      activity.getWindow().addFlags(WindowManager.LayoutParams.FLAG_SECURE);
+    }
+  }
 }
