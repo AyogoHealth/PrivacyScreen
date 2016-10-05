@@ -1,0 +1,28 @@
+{
+  "name": "cordova-plugin-privacy-screen",
+  "version": "1.0.0-dev",
+  "description": "Cordova plugin to secure apps against displaying screenshots in task switchers",
+  "private": true,
+  "cordova": {
+    "id": "cordova-plugin-privacy-screen",
+    "platforms": [
+      "android",
+      "ios"
+    ]
+  },
+  "keywords": [
+    "cordova",
+    "ecosystem:cordova",
+    "cordova-android",
+    "cordova-ios"
+  ],
+  "engines": {
+    "cordovaDependencies": {
+      "1.0.0": {
+        "cordova-android": ">=4.0.0",
+        "cordova-ios": ">= 4.2.0"
+      }
+    }
+  }
+}
+
