@@ -52,7 +52,7 @@ class PrivacyScreenPlugin : CDVPlugin {
 
     internal func _didBecomeActive(_ notification : NSNotification) {
         UIView.animateWithDuration(0.2,
-            animations: { self.overlay?.alpha = 0; }
+            animations: { self.overlay?.alpha = 0; },
             completion: { _ in
                 self.overlay?.removeFromSuperview();
                 self.overlay?.alpha = 1;
