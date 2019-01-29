@@ -9,15 +9,15 @@ class PrivacyScreenPlugin : CDVPlugin {
     override func pluginInitialize() {
         self.createOverlay();
 
-        NSNotificationCenter.defaultCenter().addObserver(self,
+        NotificationCenter.default.addObserver(self,
             selector: #selector(PrivacyScreenPlugin._didEnterBackground(_:)),
-            name: UIApplicationDidEnterBackgroundNotification,
+            name: NSNotification.Name.UIApplicationDidEnterBackground,
             object: nil
         );
 
-        NSNotificationCenter.defaultCenter().addObserver(self,
+        NotificationCenter.default.addObserver(self,
             selector: #selector(PrivacyScreenPlugin._didBecomeActive(_:)),
-            name: UIApplicationDidBecomeActiveNotification,
+            name: NSNotification.Name.UIApplicationDidBecomeActive,
             object: nil
         );
     }
@@ -27,31 +27,31 @@ class PrivacyScreenPlugin : CDVPlugin {
     internal func createOverlay() {
         if #available(iOS 8.0, *) {
             if !UIAccessibilityIsReduceTransparencyEnabled() {
-                self.webView.backgroundColor = UIColor.clearColor();
+                self.webView.backgroundColor = UIColor.clear;
 
-                let blurEffect = UIBlurEffect(style: UIBlurEffectStyle.Light);
+                let blurEffect = UIBlurEffect(style: UIBlurEffectStyle.light);
                 self.overlay = UIVisualEffectView(effect: blurEffect);
 
-                self.overlay?.frame = UIApplication.sharedApplication().windows.last!.bounds;
-                self.overlay?.autoresizingMask = [.FlexibleWidth, .FlexibleHeight];
+                self.overlay?.frame = UIApplication.shared.windows.last!.bounds;
+                self.overlay?.autoresizingMask = [.flexibleWidth, .flexibleHeight];
 
                 return;
             }
         }
 
-        self.overlay = UIView(frame: UIApplication.sharedApplication().windows.last!.bounds);
-        self.overlay?.backgroundColor = UIColor.blackColor();
+        self.overlay = UIView(frame: UIApplication.shared.windows.last!.bounds);
+        self.overlay?.backgroundColor = UIColor.black;
     }
 
 
     internal func _didEnterBackground(_ notification : NSNotification) {
-        if let window = UIApplication.sharedApplication().windows.last {
+        if let window = UIApplication.shared.windows.last {
             window.addSubview(self.overlay!);
         }
     }
 
     internal func _didBecomeActive(_ notification : NSNotification) {
-        UIView.animateWithDuration(0.2,
+        UIView.animate(withDuration: 0.2,
             animations: { self.overlay?.alpha = 0; },
             completion: { _ in
                 self.overlay?.removeFromSuperview();
