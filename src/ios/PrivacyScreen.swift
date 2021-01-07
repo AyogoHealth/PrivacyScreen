@@ -11,13 +11,13 @@ class PrivacyScreenPlugin : CDVPlugin {
 
         NotificationCenter.default.addObserver(self,
             selector: #selector(PrivacyScreenPlugin._didEnterBackground(_:)),
-            name: NSNotification.Name.UIApplicationDidEnterBackground,
+            name: UIApplication.didEnterBackgroundNotification,
             object: nil
         );
 
         NotificationCenter.default.addObserver(self,
             selector: #selector(PrivacyScreenPlugin._didBecomeActive(_:)),
-            name: NSNotification.Name.UIApplicationDidBecomeActive,
+            name:  UIApplication.didBecomeActiveNotification,
             object: nil
         );
     }
@@ -26,10 +26,10 @@ class PrivacyScreenPlugin : CDVPlugin {
 
     internal func createOverlay() {
         if #available(iOS 8.0, *) {
-            if !UIAccessibilityIsReduceTransparencyEnabled() {
+            if !UIAccessibility.isReduceTransparencyEnabled {
                 self.webView.backgroundColor = UIColor.clear;
 
-                let blurEffect = UIBlurEffect(style: UIBlurEffectStyle.light);
+                let blurEffect = UIBlurEffect(style: UIBlurEffect.Style.light);
                 self.overlay = UIVisualEffectView(effect: blurEffect);
 
                 self.overlay?.frame = UIApplication.shared.windows.last!.bounds;
@@ -44,13 +44,13 @@ class PrivacyScreenPlugin : CDVPlugin {
     }
 
 
-    internal func _didEnterBackground(_ notification : NSNotification) {
+    @objc internal func _didEnterBackground(_ notification : NSNotification) {
         if let window = UIApplication.shared.windows.last {
             window.addSubview(self.overlay!);
         }
     }
 
-    internal func _didBecomeActive(_ notification : NSNotification) {
+    @objc internal func _didBecomeActive(_ notification : NSNotification) {
         UIView.animate(withDuration: 0.2,
             animations: { self.overlay?.alpha = 0; },
             completion: { _ in
