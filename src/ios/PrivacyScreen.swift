@@ -11,7 +11,7 @@ class PrivacyScreenPlugin : CDVPlugin {
 
         NotificationCenter.default.addObserver(self,
             selector: #selector(PrivacyScreenPlugin._didEnterBackground(_:)),
-            name: UIApplication.didEnterBackgroundNotification,
+            name: UIApplication.willResignActiveNotification,
             object: nil
         );
 
@@ -45,7 +45,7 @@ class PrivacyScreenPlugin : CDVPlugin {
 
 
     @objc internal func _didEnterBackground(_ notification : NSNotification) {
-        if let window = UIApplication.shared.windows.last {
+        if let window = UIApplication.shared.keyWindow {
             window.addSubview(self.overlay!);
         }
     }
