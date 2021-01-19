@@ -11,6 +11,7 @@ import org.apache.cordova.CordovaWebView;
 import android.app.Activity;
 import android.view.Window;
 import android.view.WindowManager;
+import android.os.Build;
 
 /**
  * This class sets the FLAG_SECURE flag on the window to make the app private
@@ -22,10 +23,10 @@ public class PrivacyScreenPlugin extends CordovaPlugin {
   @Override
   public void initialize(CordovaInterface cordova, CordovaWebView webView) {
     super.initialize(cordova, webView);
-      if (android.os.Build.VERSION.SDK_INT < Build.VERSION_CODES.O) {
-        Activity activity = this.cordova.getActivity();
-        activity.getWindow().addFlags(WindowManager.LayoutParams.FLAG_SECURE);
-      }
+    if (android.os.Build.VERSION.SDK_INT < Build.VERSION_CODES.O) {
+      Activity activity = this.cordova.getActivity();
+      activity.getWindow().addFlags(WindowManager.LayoutParams.FLAG_SECURE);
+    }
   }
 
   @Override
