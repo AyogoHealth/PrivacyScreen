@@ -13,19 +13,34 @@ import android.view.Window;
 import android.view.WindowManager;
 
 /**
- * This class sets the FLAG_SECURE flag on the window to make the app
- * private when shown in the task switcher, if the NoAppScreenshots preference
- * is set in config.xml.
+ * This class sets the FLAG_SECURE flag on the window to make the app private
+ * when shown in the task switcher, if the NoAppScreenshots preference is set in
+ * config.xml.
  */
 public class PrivacyScreenPlugin extends CordovaPlugin {
 
   @Override
   public void initialize(CordovaInterface cordova, CordovaWebView webView) {
     super.initialize(cordova, webView);
+      if (android.os.Build.VERSION.SDK_INT < Build.VERSION_CODES.O) {
+        Activity activity = this.cordova.getActivity();
+        activity.getWindow().addFlags(WindowManager.LayoutParams.FLAG_SECURE);
+      }
+  }
 
-    if (preferences.getBoolean("NoAppScreenshots", true)) {
-      Activity activity = this.cordova.getActivity();
-      activity.getWindow().addFlags(WindowManager.LayoutParams.FLAG_SECURE);
+  @Override
+  public void onResume(boolean multitasking) {
+    if (android.os.Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+      this.cordova.getActivity().getWindow().clearFlags(WindowManager.LayoutParams.FLAG_SECURE);
     }
+    super.onResume(multitasking);
+  }
+
+  @Override
+  public void onPause(boolean multitasking) {
+    if (android.os.Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+      this.cordova.getActivity().getWindow().addFlags(WindowManager.LayoutParams.FLAG_SECURE);
+    }
+    super.onPause(multitasking);
   }
 }
